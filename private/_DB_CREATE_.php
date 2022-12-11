@@ -3,6 +3,7 @@
     define( 'CREATE_DATABASE', [
         "CREATE DATABASE `rtcamp_assignment`",
         "CREATE TABLE `rtcamp_assignment`.`email_info` ( `email` VARCHAR(255) NOT NULL , `create_datetime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `verified` BOOLEAN NOT NULL DEFAULT FALSE , `subcribed` BOOLEAN NOT NULL DEFAULT FALSE )",
+        "ALTER TABLE `email_info` ADD UNIQUE(`email`)",
     ]);
     try {
         $connect = new PDO( "mysql:host=" . DB_SERVER, DB_USERNAME, DB_PASSWORD );

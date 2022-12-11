@@ -41,7 +41,7 @@ submit.addEventListener("mouseover",function(){//check if user tries to reach su
         msg = setTimeout(() => {
             msgDiv.innerHTML = '';
             msgDiv.classList.remove('slide-anim')
-        }, 2500);
+        }, 2000);
     }
 });
 
@@ -82,13 +82,13 @@ submit.addEventListener("click",function(event){//submiting user's email
 
             document.getElementById("form").reset();
 
-            if (data['verified']) {
+            if (data['status']) {
                 loader.classList.add('done')
                 setTimeout(() => {
                     loader.setAttribute("hidden","");
                     loader.classList.remove('done');
                     submit.removeAttribute("hidden");
-                }, 1500);
+                }, 3500);
             }
         }).catch((err)=>console.log(err))
     }

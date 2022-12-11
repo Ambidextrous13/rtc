@@ -90,22 +90,32 @@ input:hover{
     100% { transform: rotate(360deg); }
   }
 .done{
-    height: 22px;
-    width: 60px;
-    border-radius: 0;
-    border: 3px solid #fff0;
-    border-bottom: 3px solid #fa3c3c; 
-    border-left: 3px solid #fa3c3c; 
-    animation: success 1s linear 1;
+    animation: success 1.5s cubic-bezier(0, 1, 0, 1) 1;
     position: relative;
-    top: -40%;
-    left: -20%;
     animation-fill-mode: forwards;
-    animation-delay: 2s;
 }
-@keyframes success {    
+@keyframes success {   
+    0% {
+        top: 0%;
+        left: 0%;
+        height: 50px;
+        width: 50px;
+        opacity: 0.1; 
+        border: 3px solid #fff0;
+        border-bottom: 3px solid #fa3c3c; 
+        transform: rotate(0deg);
+        border-radius: 50%; 
+    }
     100%{
+        top: -40%;
+        left: -20%;
+        height: 22px;
+        border: 3px solid #fff0;
+        border-bottom: 3px solid #0f0; 
+        border-left: 3px solid #0f0; 
+        opacity: 1;
         transform: rotate(-45deg);
+        border-radius: 0;
     }
 }
 

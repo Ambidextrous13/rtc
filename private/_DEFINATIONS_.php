@@ -10,6 +10,9 @@
     if( ! defined('DATABASE')){
         define( 'DATABASE', 'rtcamp_assignment' );
     }
+    if( ! defined('DB_TABLE')){
+        define( 'DB_TABLE', 'email_info' );
+    }
 
 
     if( ! defined('PRIVATE_URI')){

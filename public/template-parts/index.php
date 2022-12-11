@@ -7,9 +7,10 @@
             <input type="email" name="user_email" id="userEmail" placeholder="E-mail here">
             <div class="overlap-wrapper">
                 <input type="submit" value="Subscribe" id="submitButton">
-                <div id="loader" hidden></div>
+                <div id="loader" class ="loader" hidden></div>
             </div>
         </form>
+        <p id = "message" class="pera"></p>
     </section>
     <div class="vr-line"></div>
     <section class="section-right">
@@ -19,7 +20,7 @@
             <div class="selected-img s2"><a class="hov-vis" href="https://xkcd.com/150" target="_blank">grownups</a></div>
             <div class="selected-img s3"><a class="hov-vis" href="https://xkcd.com/162" target="_blank">angular_momentum</a></div>
             <div class="selected-img s4"><a class="hov-vis" href="https://xkcd.com/730" target="_blank">circuit_diagram</a></div>
-            <div class="selected-img s5"><a class="hov-vis" href="https://xkcd.com/730" target="_blank">Alternative Energy Revolution<span id="Center"></span></a></div>
+            <div class="selected-img s5"><a class="hov-vis" href="https://xkcd.com/730" target="_blank">Alternative Energy Revolution<span id="Centre"></span></a></div>
             <div class="selected-img s1"><a class="hov-vis" href="https://xkcd.com/688" target="_blank">self description</a></div>
             <div class="selected-img s2"><a class="hov-vis" href="https://xkcd.com/150" target="_blank">grownups</a></div>
         </div>

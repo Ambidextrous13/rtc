@@ -1,4 +1,17 @@
 <?php
+    require_once __DIR__. '\\_CONFIDENTIALS_.php';
+
+    if( ! defined('DB_SERVER')){
+        define( 'DB_SERVER', 'localhost' );
+    }
+    if( ! defined('DB_USERNAME')){
+        define( 'DB_USERNAME', 'root' );
+    }
+    if( ! defined('DATABASE')){
+        define( 'DATABASE', 'rtcamp_assignment' );
+    }
+
+
     if( ! defined('PRIVATE_URI')){
         define( 'PRIVATE_URI', __DIR__ . '\\' );
     }

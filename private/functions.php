@@ -55,10 +55,10 @@
                         ],
                      ];
                 
-        if($attachments){
-            $data['attachments'] = [
+        if( $attachments ){
+            $data[ 'attachments' ] = [
                 [
-                    'content' => base64_encode(file_get_contents($attachments[ 'comic_image' ])),
+                    'content' => base64_encode(file_get_contents( $attachments[ 'comic_image' ] )),
                     'type' => 'image/jpg',
                     'filename' => 'comic-'.$attachments[ 'comic_name' ],
                     'disposition' => 'attachment',
@@ -67,18 +67,41 @@
             ];
         }     
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://api.sendgrid.com/v3/mail/send');
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $response = curl_exec($ch);
-        curl_close($ch);
+        curl_setopt( $ch, CURLOPT_URL, 'https://api.sendgrid.com/v3/mail/send' );
+        curl_setopt( $ch, CURLOPT_POST, 1 );
+        curl_setopt( $ch, CURLOPT_POSTFIELDS, json_encode( $data ) );
+        curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers );
+        curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, 1 );
+        curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
+        $response = curl_exec( $ch );
+        curl_close( $ch );
 
         return $response;
     }
 
-    send_mail("pateljanakking@gmail.com","test","testing @ 6:45am")
+    function home_url(){
+        // return sprintf(
+        //     "%s://%s",
+        //     isset( $_SERVER[ 'HTTPS' ] ) && 'off' !== $_SERVER[ 'HTTPS' ] ? 'https' : 'http',
+        //     $_SERVER[ 'SERVER_NAME' ]
+        //   );
+        return 'http://localhost:8080/RTC_v3/public/';
+    }
+
+    function tokenised_it( $string ){
+        return password_hash( $string . 'verification', PASSWORD_BCRYPT );
+    }
+
+    function detokenised_it( $email, $token ){
+        return password_verify( $email . 'verification', $token );
+    }
+
+    function send_email_for_verification( $to ){
+        $subject = 'XKCD Comicbook verfication';
+        $token = tokenised_it( $to );
+        require_once __DIR__. '\\verification-email.php';
+        $content = content( $to, $token );
+        send_mail( $to, $subject, $content );
+    }
 
 ?>

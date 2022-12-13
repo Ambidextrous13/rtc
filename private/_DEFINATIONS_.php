@@ -34,6 +34,9 @@
     if( ! defined( 'JS_URL' )){
         define( 'JS_URL' , JS_URI . 'main.js' );
     }
+    if( ! defined( 'IMG_URI' )){
+        define( 'IMG_URI' , PRIVATE_URI . 'assets\\img\\' );
+    }
 
 
 
@@ -59,15 +62,16 @@
     }
 
 
-
-    if( ! defined( 'HOME_TITLE' )){
-        define( 'HOME_TITLE' , 'XKCD challenge' );
-    }
     if( ! defined( 'EMAIL_FROM' )){
         define( 'EMAIL_FROM' , '2018ecjan068@gmail.com' );
     }
     if( ! defined( 'EMAIL_BY' )){
         define( 'EMAIL_BY' , 'Janak Patel' );
+    }
+
+
+    if( ! defined( 'HOME_TITLE' )){
+        define( 'HOME_TITLE' , 'XKCD Challange' );
     }
     
 ?>

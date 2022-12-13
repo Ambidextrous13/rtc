@@ -1,0 +1,254 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Please wait</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: black;
+            --clock-color: #4ec0e9;
+            --clock-width: 5rem;
+            --clock-radius: calc(var(--clock-width) / 2);
+            --clock-minute-length: calc(var(--clock-width) * 0.4);
+            --clock-hour-length: calc(var(--clock-width) * 0.2);
+            --clock-thickness: 0.2rem;
+       }
+        .clock-loader {
+            
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+           
+       }
+       .clock-box{
+        width: var(--clock-width);
+        height: var(--clock-width);
+        border: 3px solid var(--clock-color);
+       }
+        .min-hand, .hour-hand {
+            position: absolute;
+            content: "";
+            top: calc(var(--clock-radius) * 0.25);
+            width: var(--clock-thickness);
+            background: var(--clock-color);
+            border-radius: 10px;
+            transform-origin: center calc(100% - calc(var(--clock-thickness) / 2));
+            animation: spin infinite linear;
+       }
+       /* Minute hand */
+        .min-hand {
+            height: var(--clock-minute-length);
+            animation-duration: 1s;
+       }
+       /* Hour hand */
+        .hour-hand {  
+            top: calc(var(--clock-radius) * 0.25 + var(--clock-hour-length));
+            height: var(--clock-hour-length);
+            animation-duration: 7s;
+       }
+        @keyframes spin {
+            to {
+                transform: rotate(1turn);
+           }
+       }
+       .done-hour{
+           animation: done-hour 2s;
+           animation-fill-mode: forwards;
+       }
+       .done-min{
+        animation: done-min 2s;
+        animation-fill-mode: forwards;
+    }
+       @keyframes done-hour{
+           to{transform: rotate(-45deg);}
+           
+       }
+       @keyframes done-min{
+           to{transform: rotate(45deg);}
+       }
+
+    .waiting{
+        position: relative;
+        display: flex;
+    }
+    h1{
+        font-family: 'Times New Roman', Times, serif;
+        font-weight: 500;
+        color: #4ec0e9;
+        letter-spacing: 0.8px;
+    }
+
+    .wrapper{
+        position: absolute;
+        top: -20px;
+        left: 234px;
+        width:60px;
+        height:60px;
+    }
+    .circle{
+        width:15px;
+        height:15px;
+        position: absolute;
+        border-radius: 50%;
+        background-color: #fff;
+
+        transform-origin:20%;
+        animation: circle .5s alternate infinite ease;
+        transition: all 2000ms;
+    }
+    
+    @keyframes circle{
+        0%{
+            top:60px;
+            height:5px;
+            border-radius: 50px 50px 25px 25px;
+            transform: scaleX(1.7);
+        }
+        40%{
+            height:20px;
+            border-radius: 50%;
+            transform: scaleX(1);
+        }
+        100%{
+            top:0%;
+        }
+    }
+    .circle:nth-child(2){
+        left:60%;
+        animation-delay: .2s;
+    }
+    .circle:nth-child(3){
+        left:120%;
+        right:15%;
+        animation-delay: .3s;
+    }
+    .shadow{
+        width:20px;
+        height:4px;
+        border-radius: 50%;
+        background-color: rgba(226, 226, 226, 0.5);
+        position: absolute;
+        top:62px;
+        transform-origin: 50%;
+        z-index: -1;
+        filter: blur(1px);
+        animation: shadow .5s alternate infinite ease;
+        transition: all 2000ms;
+    }
+    
+    @keyframes shadow{
+        0%{
+            transform: scaleX(1.5);
+        }
+        40%{
+            transform: scaleX(1);
+            opacity: .7;
+        }
+        100%{
+            transform: scaleX(.2);
+            opacity: .4;
+        }
+    }
+    .shadow:nth-child(4){
+        left: 60%;
+        animation-delay: .2s
+    }
+    .shadow:nth-child(5){
+        left:120%;
+        right:15%;
+        animation-delay: .3s;
+    }
+    h1{
+        font-family: 'Lato';
+        font-size: 20px;
+        letter-spacing: 12px;
+        color: #fff;
+        left:15%;
+    }
+    .hide{
+        opacity: 0;
+        background-color: rgba(0,0,0,0);
+    }
+    </style>
+</head>
+<body>
+    <div class="clock-loader">
+        <div class="clock-box"></div>
+        <div class="min-hand"></div>
+        <div class="hour-hand"></div>
+    </div>
+
+    <div class="waiting">
+        <h1 class="heading-1">Please wait</h1>
+        <div class="wrapper">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="shadow"></div>
+            <div class="shadow"></div>
+            <div class="shadow"></div>
+        </div>
+    </div>
+<script>
+    const address = window.location.search;
+    const params = new URLSearchParams(address);
+    console.log(params.get('email'));
+    console.log(params.get('token'));
+    const wrapper = document.querySelector(".wrapper"); 
+    const clock = document.querySelector(".clock-box");
+    const h1 = document.querySelector(".heading-1");
+    const min = document.querySelector(".min-hand");
+    const hour = document.querySelector(".hour-hand");
+    const t = setTimeout(function(){
+        if(params.get('email')){
+            fetch("http://localhost:8080/RTC_v3/public/validator.php",
+            {
+                method:"POST",
+                body: JSON.stringify({
+                    "user_email" : params.get('email'),
+                    "other" : {
+                        "send_mail" : 0,
+                        "verification_token": params.get('token')
+                    }
+                 }),
+                headers:{
+                    "Content-type":"application/json",
+                }
+            })
+            .then((response)=> {return response.json()})
+            .then((data)=>{if(data['status']){
+                                                //console.log(data);
+                                                
+                                                //setTimeout(function(){
+                                                    wrapper.classList.add('hide')
+                                                    clock.classList.add('hide');
+                                                    min.classList.add('done-min')
+                                                    hour.classList.add('done-hour')
+                                                    h1.textContent = 'Verified!'
+    
+                                                //},3500)
+                                            }
+                             }).catch((err)=>{console.log(err)})
+        }else{
+            wrapper.classList.add('hide')
+            clock.classList.add('hide');
+            min.classList.add('hide')
+            hour.classList.add('hide')
+            h1.textContent = 'We guess you are on wrong page'
+        }
+        // clearTimeout(t);
+    },1000);
+</script>
+</body>
+</html>
+

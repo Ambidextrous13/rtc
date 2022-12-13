@@ -28,7 +28,6 @@ submit.addEventListener("mouseover",function(){//check if user tries to reach su
         
         if( typeof msg !== 'undefined'){
             clearTimeout(msg);
-            console.log('cleared')
             msgDiv.style.animation = 'none';
             msgDiv.offsetHeight;
             msgDiv.style.animation = null;
@@ -62,15 +61,15 @@ submit.addEventListener("click",function(event){//submiting user's email
     loader.removeAttribute("hidden");
 
     if(validateEmail(mailFeild)){
-        setTimeout(() => {
-            
-        }, 2000);
         let userEmail = mailFeild.value;
-        fetch("http://localhost:8080/RTC_v3/private/validator.php",
+        fetch("http://localhost:8080/RTC_v3/public/validator.php",
         {
             method:"POST",
             body: JSON.stringify({
             "user_email" : userEmail,
+            "other" : {
+                "send_mail" : 1
+            }
             }),
             headers:{
                 "Content-type":"application/json",

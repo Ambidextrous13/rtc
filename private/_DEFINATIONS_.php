@@ -63,4 +63,11 @@
     if( ! defined( 'HOME_TITLE' )){
         define( 'HOME_TITLE' , 'XKCD challenge' );
     }
+    if( ! defined( 'EMAIL_FROM' )){
+        define( 'EMAIL_FROM' , '2018ecjan068@gmail.com' );
+    }
+    if( ! defined( 'EMAIL_BY' )){
+        define( 'EMAIL_BY' , 'Janak Patel' );
+    }
+    
 ?>

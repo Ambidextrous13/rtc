@@ -7,7 +7,7 @@
         return $connect;
     }
 
-    function run_query( $query,$params,$datatypes ){
+    function run_query( $query, $params, $datatypes ){
         $connection = connect_database();
         if( $connection ){
             $sql = $connection->prepare( $query );
@@ -25,5 +25,60 @@
             return null;
         }
     }
+
+    function send_mail( $to, $subject, $content ,$attachments = [] ){
+        $headers = array(
+            'Authorization: Bearer '.SENDGRID_API_KEY,
+            'Content-Type: application/json'
+        );
+        $data = [
+            'personalizations' => [
+                                    [
+                                    'to' => [
+                                              [
+                                                'email' => $to,
+                                              ]
+                                            ] 
+                                    ]    
+                                ],
+            'from' => [
+                'email' => EMAIL_FROM ,
+                'name' => EMAIL_BY,
+                ],
+            'subject' => $subject,
+            'content' => [
+                            [
+                                'type' => 'text/html',
+                                'value' => $content
+
+                            ]
+                        ],
+                     ];
+                
+        if($attachments){
+            $data['attachments'] = [
+                [
+                    'content' => base64_encode(file_get_contents($attachments[ 'comic_image' ])),
+                    'type' => 'image/jpg',
+                    'filename' => 'comic-'.$attachments[ 'comic_name' ],
+                    'disposition' => 'attachment',
+                    'content_ID' => 'comic-'.$attachments[ 'comic_name' ],
+                ]
+            ];
+        }     
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://api.sendgrid.com/v3/mail/send');
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        return $response;
+    }
+
+    send_mail("pateljanakking@gmail.com","test","testing @ 6:45am")
 
 ?>

@@ -201,7 +201,7 @@
     </div>
 <script>
     const address = window.location.search;
-    const peras = new URLSearchParams(address);
+    const params = new URLSearchParams(address);
 
     const wrapper = document.querySelector(".wrapper"); 
     const clock = document.querySelector(".clock-box");
@@ -210,30 +210,28 @@
     const hour = document.querySelector(".hour-hand");
 
     const t = setTimeout(function(){
-        if(peras.get('email')){
-            fetch("http://localhost:8080/RTC_v2/public/unsub.php",
+        if(params.get('email')){
+            fetch("http://localhost:8080/RTC_v3/public/validator.php",
             {
                 method:"POST",
                 body: JSON.stringify({
-                    "email" : peras.get('email'),
-                    "token": peras.get('token')
-                }),
+                    "user_email" : params.get('email'),
+                    "other" : {
+                        "send_mail" : 0,
+                        "unset_token": params.get('token')
+                    }
+                 }),
                 headers:{
                     "Content-type":"application/json",
                 }
             })
             .then((response)=> {return response.json()})
             .then((data)=>{if(data['verified']){
-                                                //console.log(data);
-                                                
-                                                //setTimeout(function(){
-                                                    wrapper.classList.add('hide')
-                                                    clock.classList.add('hide');
-                                                    min.classList.add('done-min')
-                                                    hour.classList.add('done-hour')
-                                                    h1.textContent = 'Verified!'
-
-                                                //},3500)
+                                                wrapper.classList.add('hide')
+                                                clock.classList.add('hide');
+                                                min.classList.add('done-min')
+                                                hour.classList.add('done-hour')
+                                                h1.textContent = 'Unsubscribed ! 🙁🙁'
                                             }
                             }).catch((err)=>{console.log(err)})
         }
@@ -244,7 +242,6 @@
             hour.classList.add('hide')
             h1.textContent = 'We guess you are on wrong page'
         }
-        clearTimeout(t);
     },1000);
 </script>
 </body>

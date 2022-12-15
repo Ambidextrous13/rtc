@@ -11,7 +11,6 @@
         $query = CREATE_DATABASE[0];
         $connect->exec($query);
         $connect = null;
-        echo "clear";
         $database = 'mysql:host=' . DB_SERVER  . ';dbname=' .  DATABASE. ';';
         $connect = new PDO( $database, DB_USERNAME, DB_PASSWORD );
         foreach ( CREATE_DATABASE as $query) {

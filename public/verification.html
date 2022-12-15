@@ -202,8 +202,7 @@
 <script>
     const address = window.location.search;
     const params = new URLSearchParams(address);
-    console.log(params.get('email'));
-    console.log(params.get('token'));
+
     const wrapper = document.querySelector(".wrapper"); 
     const clock = document.querySelector(".clock-box");
     const h1 = document.querySelector(".heading-1");
@@ -227,16 +226,11 @@
             })
             .then((response)=> {return response.json()})
             .then((data)=>{if(data['status']){
-                                                //console.log(data);
-                                                
-                                                //setTimeout(function(){
-                                                    wrapper.classList.add('hide')
-                                                    clock.classList.add('hide');
-                                                    min.classList.add('done-min')
-                                                    hour.classList.add('done-hour')
-                                                    h1.textContent = 'Verified!'
-    
-                                                //},3500)
+                                                wrapper.classList.add('hide')
+                                                clock.classList.add('hide');
+                                                min.classList.add('done-min')
+                                                hour.classList.add('done-hour')
+                                                h1.textContent = 'Verified! 😍😍'
                                             }
                              }).catch((err)=>{console.log(err)})
         }else{
@@ -246,7 +240,6 @@
             hour.classList.add('hide')
             h1.textContent = 'We guess you are on wrong page'
         }
-        // clearTimeout(t);
     },1000);
 </script>
 </body>

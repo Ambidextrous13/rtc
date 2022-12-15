@@ -60,6 +60,13 @@
     if( ! defined('INDEX_PART')){
         define( 'INDEX_PART', TEMPLATE_PARTS_URI . 'index.php' );
     }
+    if( ! defined('EMAIL_COMIC_PART')){
+        define( 'EMAIL_COMIC_PART', TEMPLATE_PARTS_URI . 'email-template.php' );
+    }
+    if( ! defined('UNSUBSCRIBE_PAGE')){
+        define( 'UNSUBSCRIBE_PAGE', PUBLIC_URI . 'unsubscribe.html' );
+    }
+    
 
 
     if( ! defined( 'EMAIL_FROM' )){

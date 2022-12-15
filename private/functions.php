@@ -31,6 +31,7 @@
             'Authorization: Bearer '.SENDGRID_API_KEY,
             'Content-Type: application/json'
         );
+
         $data = [
             'personalizations' => [
                                     [
@@ -54,17 +55,19 @@
                             ]
                         ],
                      ];
-                
+                     
         if( $attachments ){
-            $data[ 'attachments' ] = [
-                [
-                    'content' => base64_encode(file_get_contents( $attachments[ 'comic_image' ] )),
-                    'type' => 'image/jpg',
-                    'filename' => 'comic-'.$attachments[ 'comic_name' ],
-                    'disposition' => 'attachment',
-                    'content_ID' => 'comic-'.$attachments[ 'comic_name' ],
-                ]
-            ];
+            if( isset($attachments[ 'comic' ]) ){
+                $data[ 'attachments' ] = [
+                    [
+                        'content' => base64_encode(file_get_contents( $attachments[ 'comic' ][ 'comic_image' ] )),
+                        'type' => 'image/jpg',
+                        'filename' => 'comic-'.$attachments[ 'comic' ][ 'comic_name' ],
+                        'disposition' => 'attachment',
+                        'content_ID' => 'comic-'.$attachments[ 'comic' ][ 'comic_name' ],
+                    ]
+                ];
+            }
         }     
         $ch = curl_init();
         curl_setopt( $ch, CURLOPT_URL, 'https://api.sendgrid.com/v3/mail/send' );
@@ -94,6 +97,14 @@
 
     function detokenised_it( $email, $token ){
         return password_verify( $email . 'verification', $token );
+    }
+
+    function unsubscribe_token( $string ){
+        return password_hash( $string . 'unsubscribe',PASSWORD_BCRYPT );
+    }
+
+    function unsubscribe_token_verify( $email, $token ){
+        return password_verify( $email . 'unsubscribe', $token );
     }
 
     function send_email_for_verification( $to ){

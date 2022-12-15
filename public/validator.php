@@ -21,6 +21,7 @@
     
     $message = '';
     $status = false;
+    $mode = 'unset';
     
     if( isset( $incomming[ 'user_email' ] ) && isset( $incomming[ 'other' ][ 'send_mail' ] ) )
     {
@@ -28,7 +29,13 @@
         if ( ! $send_mail) {
             if( isset( $incomming[ 'other' ][ 'verification_token' ] ))
             {
-                $token = $incomming[ 'other' ][ 'verification_token' ];
+                $set_token = $incomming[ 'other' ][ 'verification_token' ];
+                $mode = 'set';
+            }
+            elseif( isset( $incomming[ 'other' ][ 'unset_token' ] ))
+            {
+                $unset_token = $incomming[ 'other' ][ 'unset_token' ];
+                $mode = 'unset';
             }
         }
         $user_email = $incomming[ 'user_email' ];
@@ -44,16 +51,32 @@
                         $result = run_query( $query,[ $user_email ],[ PDO::PARAM_STR ] );
                         if ( isset( $result[ '0' ] )) 
                         {
-                            if ( ! $send_mail ) {
-                                if ( detokenised_it( $user_email, $token )) {
-                                    $status = true;
-                                    $message = 'verified';
-                                    $query = sprintf( 'UPDATE `%s` SET `verified` = \'1\' ,`subcribed` = \'1\' WHERE `email` = ?', DB_TABLE );
-                                    run_query( $query,[ $user_email ],[ PDO::PARAM_STR ] );
-                                }
-                                else {
-                                    $status = false;
-                                    $message = '';
+                            if ( ! $send_mail ) 
+                            {
+                                if( 'set' === $mode )
+                                {
+                                    if ( detokenised_it( $user_email, $set_token )) {
+                                        $status = true;
+                                        $message = 'verified';
+                                        $query = sprintf( 'UPDATE `%s` SET `verified` = \'1\' ,`subcribed` = \'1\' WHERE `email` = ?', DB_TABLE );
+                                        run_query( $query,[ $user_email ],[ PDO::PARAM_STR ] );
+                                    }
+                                    else {
+                                        $status = false;
+                                        $message = '';
+                                    }
+                                }else
+                                {
+                                    if ( unsubscribe_token_verify( $user_email, $unset_token )) {
+                                        $status = true;
+                                        $message = 'unscribed';
+                                        $query = sprintf( 'UPDATE `%s` SET `verified` = \'0\' ,`subcribed` = \'0\' WHERE `email` = ?', DB_TABLE );
+                                        run_query( $query,[ $user_email ],[ PDO::PARAM_STR ] );
+                                    }
+                                    else {
+                                        $status = false;
+                                        $message = '';
+                                    }
                                 }
                             }else {
                                 [ 'verified' => $is_verified , 'subcribed' => $is_subscribed ] = $result[ 0 ];
